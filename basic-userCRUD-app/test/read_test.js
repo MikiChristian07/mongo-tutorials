@@ -5,7 +5,7 @@ describe('Reading users from the database', () => {
     // declare the user variable, for scoping purposes
     let mike;
 
-    beforeEach(() => {
+    beforeEach((done) => {
         //create the instance of the user
         mike = new User({ name:  'Mike' });
 
@@ -13,6 +13,7 @@ describe('Reading users from the database', () => {
             .then(() => { done(); })
     })
     
+    // using .find()
     it('Finds all the users with the name of Mike', (done) => {
         User.find({name: 'Mike' })
             .then((users) => { 
@@ -20,4 +21,13 @@ describe('Reading users from the database', () => {
             });
             done();
     });
+
+    // using .findOne() 
+    it('Find a user with a particular id', (done) => {
+        User.findOne({_id: mike._id})
+            .then((user) => {
+                assert(user.name === 'Mike');
+                done();
+            })
+    })
 });
