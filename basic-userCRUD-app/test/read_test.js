@@ -16,8 +16,8 @@ describe('Reading users from the database', () => {
     it('Finds all the users with the name of Mike', (done) => {
         User.find({name: 'Mike' })
             .then((users) => { 
-                console.log(users);
+                assert(users[0]._id.toString() === mike._id.toString());
             });
-        done();
+            done();
     });
 });
