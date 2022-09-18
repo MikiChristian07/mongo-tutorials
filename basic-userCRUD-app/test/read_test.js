@@ -27,7 +27,7 @@ describe('Reading users from the database', () => {
         User.findOne({_id: mike._id})
             .then((user) => {
                 assert(user.name === 'Mike');
-                done();
             })
+            done();
     })
 });
