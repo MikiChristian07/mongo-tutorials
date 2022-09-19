@@ -7,7 +7,10 @@ describe('Upadating users in the database', () => {
 
     beforeEach((done) => {
         //create the instance of the user
-        mike = new User({ name:  'Mike' });
+        mike = new User({ 
+            name:  'Mike',
+            postCount: 0
+        });
 
         mike.save()
             .then(() => { done(); })
@@ -20,24 +23,30 @@ describe('Upadating users in the database', () => {
             .then((users) => {
                 assert(users.length === 1);
                 assert(users[0].name === 'Alex'); 
+            done();
         })
-        done();
+        
     }
 
-    it('instance type using set and save', (done) => {
-        mike.set('name', 'Alex');
-        assertName(mike.save(), done());            
-    })
-
     it('A model instance can update', (done) => {
-        assertName(mike.updateOne({ name: 'Alex' }), done())
+        assertName(mike.updateOne({ name: 'Alex' }), done)
     })
 
     it('A model class can update one recores', (done) => {
-        assertName(User.updateOne({ name: 'Alex' }), done())
+        assertName(User.updateOne({name: 'Mike'}, { name: 'Alex' }), done)
     })
     
     it('A model class can find a record with an id and update', (done) => {
-        assertName(User.findByIdAndDelete({ name: 'Alex' }), done())
+        assertName(User.findByIdAndUpdate(mike._id, { name: 'Alex' }), done)
     })
+
+    it('A user can have their post count incremented by 1', (done) => {
+        User.updateOne({ name: 'Mike' }, { $inc: { postCount: 10 }})
+            .then(() => { User.findOne({ name: 'Mike' }) })
+            .then((user) => { 
+                assert(user.postCount === 10) 
+            });
+            done();
+    });
+
 });
