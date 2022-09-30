@@ -9,7 +9,7 @@ describe('Upadating users in the database', () => {
         //create the instance of the user
         mike = new User({ 
             name:  'Mike',
-            postCount: 0
+            likes: 0
         });
 
         mike.save()
@@ -29,7 +29,7 @@ describe('Upadating users in the database', () => {
     }
 
     it('A model instance can update', (done) => {
-        assertName(mike.updateOne({ name: 'Alex' }), done)
+        assertName(mike.updateOne({ name: 'Alex' }), done())
     })
 
     it('A model class can update one recores', (done) => {
@@ -40,13 +40,13 @@ describe('Upadating users in the database', () => {
         assertName(User.findByIdAndUpdate(mike._id, { name: 'Alex' }), done)
     })
 
-    it('A user can have their post count incremented by 1', (done) => {
-        User.updateOne({ name: 'Mike' }, { $inc: { postCount: 10 }})
+    it('A user can have their likes incremented by 1', (done) => {
+        User.updateOne({ name: 'Mike' }, { $inc: { likes: 5 }})
             .then(() => { User.findOne({ name: 'Mike' }) })
             .then((user) => { 
-                assert(user.postCount === 10) 
+                assert(user.likes === 1);
             });
-            done();
+            done(); 
     });
 
 });

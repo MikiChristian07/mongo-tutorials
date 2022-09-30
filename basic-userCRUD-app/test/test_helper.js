@@ -2,6 +2,8 @@ import mongoose from 'mongoose';
 
 mongoose.Promise = global.Promise;
 
+
+// "C:\Program Files\MongoDB\Server\5.0\bin\mongod.exe" --dbpath="c:\data\db"
 before((done) => {
     mongoose.connect('mongodb://localhost/users_test');
     mongoose.connection
@@ -12,9 +14,13 @@ before((done) => {
 });
 
 beforeEach((done) => {
-    mongoose.connection.collections.users.drop(() => {
-    // calling done to go to the next code piece 
-        done();
+    const { users, comments, blogposts } = mongoose.connection.collections
+    users.drop(() => {
+        blogposts.drop(() => {
+            comments.drop(() => {
+                done();
+            })
+        })
     });
 });
 
